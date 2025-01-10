@@ -10,9 +10,8 @@ using ValidationFramework.Implement.CoreValidator;
 namespace ValidationFramework.Implement.ValidateRules
 {
 
-    public class EmailRule : IValidateRule
+    public class EmailRule : BaseValidateRule
     {
-        private BaseValidator? _validator;
 
         public EmailRule()
         {
@@ -21,7 +20,7 @@ namespace ValidationFramework.Implement.ValidateRules
             builder.AddStringLengthValidator(new StringLengthValidator(minLength: 6, maxLength: 100));  
             this._validator = builder.Build();
         }
-        public  List<ValidateRecord> Validate(object obj)
+        public override  List<ValidateRecord> Validate(object obj)
         {
             if (_validator == null)
             {

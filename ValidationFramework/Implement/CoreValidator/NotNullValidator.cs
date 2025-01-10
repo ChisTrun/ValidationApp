@@ -6,8 +6,6 @@ namespace ValidationFramework.Implement.CoreValidator
 {
     public class NotNullValidator : BaseValidator
     {
-        private readonly string _errorMessage;
-        private readonly string _validMessage;
 
         public NotNullValidator(string errorMessage = "Object cannot be null", string validMessage = "Object is valid")
         {

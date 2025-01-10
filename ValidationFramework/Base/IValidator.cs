@@ -10,5 +10,7 @@ namespace ValidationFramework.Base
     public interface IValidator
     {
         List<ValidateRecord> Validate(object obj);
+
+        void SetNextValidator(IValidator nextValidator);
     }
 }

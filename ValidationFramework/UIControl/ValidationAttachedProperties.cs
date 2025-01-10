@@ -15,17 +15,17 @@ public static class ValidationAttachedProperties
 	public static readonly DependencyProperty RulesProperty =
 		DependencyProperty.RegisterAttached(
 			"Rules",
-			typeof(List<IValidateRule>),
+			typeof(List<BaseValidateRule>),
 			typeof(ValidationAttachedProperties),
-			new PropertyMetadata(new List<IValidateRule>()));
+			new PropertyMetadata(new List<BaseValidateRule>()));
 
 	[Category("Validation")]
 	[Browsable(true)]
 	[DisplayName("Rules")]
 	[AttachedPropertyBrowsableForType(typeof(TextBox))]
-	public static List<IValidateRule> GetRules(DependencyObject element)
+	public static List<BaseValidateRule> GetRules(DependencyObject element)
 	{
-		return (List<IValidateRule>)element.GetValue(RulesProperty);
+		return (List<BaseValidateRule>)element.GetValue(RulesProperty);
 	}
 
 

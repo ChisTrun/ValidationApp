@@ -9,9 +9,8 @@ using ValidationFramework.Implement.CoreValidator;
 
 namespace ValidationFramework.Implement.ValidateRules
 {
-    public class PasswordRule : IValidateRule
+    public class PasswordRule : BaseValidateRule
     {
-        private BaseValidator? _validator;
 
         public PasswordRule()
         {
@@ -24,7 +23,7 @@ namespace ValidationFramework.Implement.ValidateRules
             this._validator = builder.Build();
         }
 
-        public  List<ValidateRecord> Validate(object obj)
+        public  override List<ValidateRecord> Validate(object obj)
         {
             if (_validator == null)
             {

@@ -9,8 +9,6 @@ namespace ValidationFramework.Implement.CoreValidator
     public class RegexValidator : BaseValidator
     {
         private readonly string _pattern;
-        private readonly string _errorMessage;
-        private readonly string _validMessage;
 
         public RegexValidator(string pattern, string errorMessage = "Input does not match the pattern", string validMessage = "Input is valid")
         {

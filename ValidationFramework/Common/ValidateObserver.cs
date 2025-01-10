@@ -9,7 +9,7 @@ namespace ValidationFramework.Common
 {
     public class ValidateObserver
     {
-        public List<IValidateRule> Rules { get; set; } = [];
+        public List<BaseValidateRule> Rules { get; set; } = [];
         public BaseValidationResultRenderer? Renderer { get; set; }
 
         public void Validate(string content)

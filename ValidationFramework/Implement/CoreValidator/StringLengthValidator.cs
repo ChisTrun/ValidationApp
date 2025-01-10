@@ -9,8 +9,6 @@ namespace ValidationFramework.Implement.CoreValidator
     {
         private readonly int _minLength;
         private readonly int _maxLength;
-        private readonly string _errorMessage;
-        private readonly string _validMessage;
 
         public StringLengthValidator(int minLength, int maxLength, string errorMessage = "Input length is out of bounds", string validMessage = "Input length is valid")
         {

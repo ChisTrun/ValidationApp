@@ -7,8 +7,9 @@ using ValidationFramework.Common;
 
 namespace ValidationFramework.Base
 {
-    public  interface IValidateRule
+    public  abstract class BaseValidateRule
     {
+        protected BaseValidator? _validator;
         public abstract  List<ValidateRecord> Validate(object obj);
     }
 }

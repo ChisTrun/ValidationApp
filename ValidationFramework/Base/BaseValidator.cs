@@ -9,7 +9,10 @@ namespace ValidationFramework.Base
 {
     public abstract class BaseValidator : IValidator
     {
-        protected IValidator? _nextValidator { get; set; } 
+
+        protected  string? _errorMessage;
+        protected  string? _validMessage;
+        protected IValidator? _nextValidator { get; set; }
 
         public void SetNextValidator(IValidator nextValidator)
         {
