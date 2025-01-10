@@ -1,0 +1,24 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:WPF="clr-namespace:ValidationLib.UIControl;assembly=ValidationFramework"
+        xmlns:ValidateRules="clr-namespace:ValidationFramework.Implement.ValidateRules;assembly=ValidationFramework" xmlns:Display="clr-namespace:ValidationLib.Display;assembly=ValidationFramework" xmlns:Trigger="clr-namespace:ValidationLib.Trigger;assembly=ValidationFramework" x:Class="ValidationApp.MainWindow"
+        Title="MainWindow" Height="450" Width="800">
+    <StackPanel>
+        <TextBox x:Name="textBox"
+         TextWrapping="Wrap"
+         Width="120">
+            <WPF:ValidationAttachedProperties.Rules>
+                <ValidateRules:EmailRule/>
+            </WPF:ValidationAttachedProperties.Rules>
+            <WPF:ValidationAttachedProperties.Trigger>
+                <Trigger:TextChangedTrigger/>
+            </WPF:ValidationAttachedProperties.Trigger>
+        </TextBox>
+        <WPF:ValidationHelper
+                              Target="{Binding ElementName=textBox, Mode=OneWay}">
+            <WPF:ValidationHelper.Renderer>
+                <Display:TextBlockDisplay/>
+            </WPF:ValidationHelper.Renderer>
+        </WPF:ValidationHelper>
+    </StackPanel>
+</Window>
