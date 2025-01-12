@@ -34,6 +34,18 @@ namespace ValidationFramework.Common
             }
         }
 
+        public void AddDateRangedValidator(DateRangedValidator validator)
+        {
+            if (_validator == null)
+            {
+                _validator = validator;
+            }
+            else
+            {
+                _validator.SetNextValidator(validator);
+            }
+        }   
+
         public BaseValidator? Build()
         {
             BaseValidator? builtValidator = _validator;

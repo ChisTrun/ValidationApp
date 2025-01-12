@@ -1,102 +1,105 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using ValidationFramework.Base;
 using ValidationFramework.Common;
 
-namespace ValidationLib.UIControl;
-
-public static class ValidationAttachedProperties
+namespace ValidationLib.UIControl
 {
-	/// <summary>
-	/// Rules attached property
-	/// </summary>
-	public static readonly DependencyProperty RulesProperty =
-		DependencyProperty.RegisterAttached(
-			"Rules",
-			typeof(List<BaseValidateRule>),
-			typeof(ValidationAttachedProperties),
-			new PropertyMetadata(new List<BaseValidateRule>()));
-
-	[Category("Validation")]
-	[Browsable(true)]
-	[DisplayName("Rules")]
-	[AttachedPropertyBrowsableForType(typeof(Control))]
-	public static List<BaseValidateRule> GetRules(DependencyObject element)
-	{
-		return (List<BaseValidateRule>)element.GetValue(RulesProperty);
-	}
-
-
-	/// <summary>
-	/// Handler attached property (hidden)
-	/// </summary>
-	public static readonly DependencyProperty ObserverProperty =
-		DependencyProperty.RegisterAttached(
-			"Observer",
-			typeof(ValidateObserver),
-			typeof(ValidationAttachedProperties),
-			new PropertyMetadata(new ValidateObserver()));
-
-	[Browsable(false)]
-    public static ValidateObserver GetObserver(DependencyObject element)
-	{
-		var handler = (ValidateObserver)element.GetValue(ObserverProperty);
-		var rules = GetRules(element);
-		handler.Rules = rules;
-		return (ValidateObserver)element.GetValue(ObserverProperty);
-	}
-
-
-    /// <summary>
-    /// Trigger attached property
-    /// </summary>
-    public static readonly DependencyProperty TriggerProperty =
-        DependencyProperty.RegisterAttached(
-            "Trigger",
-            typeof(BaseTrigger),
-            typeof(ValidationAttachedProperties),
-            new PropertyMetadata(null, OnTriggerChanged));
-
-    [Category("Validation")]
-    [Browsable(true)]
-    [DisplayName("Trigger")]
-    [AttachedPropertyBrowsableForType(typeof(Control))]
-    public static BaseTrigger GetTrigger(DependencyObject element)
+    public static class ValidationAttachedProperties
     {
-        return (BaseTrigger)element.GetValue(TriggerProperty);
-    }
+        /// <summary>
+        /// Rules attached property
+        /// </summary>
+        public static readonly DependencyProperty RulesProperty =
+            DependencyProperty.RegisterAttached(
+                "Rules",
+                typeof(List<BaseValidateRule>),
+                typeof(ValidationAttachedProperties),
+                new PropertyMetadata(new List<BaseValidateRule>()));
 
-    public static void SetTrigger(DependencyObject element, BaseTrigger value)
-    {
-        element.SetValue(TriggerProperty, value);
-    }
-
-    private static void OnTriggerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is TextBox textBox)
+        [Category("Validation")]
+        [Browsable(true)]
+        [DisplayName("Rules")]
+        [AttachedPropertyBrowsableForType(typeof(Control))]
+        public static List<BaseValidateRule> GetRules(DependencyObject element)
         {
-            BaseTrigger? existingValue = GetTrigger(textBox);
-            existingValue?.Detach();
-            if (e.NewValue is BaseTrigger newValue)
-            {
-                newValue.SetControl(textBox);
-                newValue.Attach();
-            }
-            return;
+            return (List<BaseValidateRule>)element.GetValue(RulesProperty);
         }
-        if (d is PasswordBox passwordBox )
+
+        /// <summary>
+        /// Observer attached property (hidden)
+        /// </summary>
+        public static readonly DependencyProperty ObserverProperty =
+            DependencyProperty.RegisterAttached(
+                "Observer",
+                typeof(ValidateObserver),
+                typeof(ValidationAttachedProperties),
+                new PropertyMetadata(null));
+
+        [Browsable(false)]
+        public static ValidateObserver GetObserver(DependencyObject element)
         {
-            BaseTrigger? existingValue = GetTrigger(passwordBox);
-            existingValue?.Detach();
-            if (e.NewValue is BaseTrigger newValue)
+            // Get or create a unique instance of ValidateObserver for this control
+            var observer = (ValidateObserver)element.GetValue(ObserverProperty);
+            if (observer == null)
             {
-                newValue.SetControl(passwordBox);
-                newValue.Attach();
+                observer = new ValidateObserver();
+                element.SetValue(ObserverProperty, observer);
             }
-            return;
+
+            // Update rules from the control
+            observer.Rules = GetRules(element);
+            return observer;
+        }
+
+        /// <summary>
+        /// Trigger attached property
+        /// </summary>
+        public static readonly DependencyProperty TriggerProperty =
+            DependencyProperty.RegisterAttached(
+                "Trigger",
+                typeof(BaseTrigger),
+                typeof(ValidationAttachedProperties),
+                new PropertyMetadata(null, OnTriggerChanged));
+
+        [Category("Validation")]
+        [Browsable(true)]
+        [DisplayName("Trigger")]
+        [AttachedPropertyBrowsableForType(typeof(Control))]
+        public static BaseTrigger GetTrigger(DependencyObject element)
+        {
+            return (BaseTrigger)element.GetValue(TriggerProperty);
+        }
+
+        public static void SetTrigger(DependencyObject element, BaseTrigger value)
+        {
+            element.SetValue(TriggerProperty, value);
+        }
+
+        private static void OnTriggerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBox textBox)
+            {
+                BaseTrigger? existingValue = GetTrigger(textBox);
+                existingValue?.Detach();
+                if (e.NewValue is BaseTrigger newValue)
+                {
+                    newValue.SetControl(textBox);
+                    newValue.Attach();
+                }
+            }
+            else if (d is PasswordBox passwordBox)
+            {
+                BaseTrigger? existingValue = GetTrigger(passwordBox);
+                existingValue?.Detach();
+                if (e.NewValue is BaseTrigger newValue)
+                {
+                    newValue.SetControl(passwordBox);
+                    newValue.Attach();
+                }
+            }
         }
     }
-
 }

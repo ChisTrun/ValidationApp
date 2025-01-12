@@ -32,8 +32,7 @@
                     <Trigger:TextChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
             </TextBox>
-            <WPF:ValidationHelper
-                              Target="{Binding ElementName=emailTextBox, Mode=OneWay}">
+            <WPF:ValidationHelper Target="{Binding ElementName=emailTextBox, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
                     <Display:TextBlockDisplay/>
                 </WPF:ValidationHelper.Renderer>
@@ -48,11 +47,10 @@
                     <ValidateRules:PasswordRule/>
                 </WPF:ValidationAttachedProperties.Rules>
                 <WPF:ValidationAttachedProperties.Trigger>
-                    <Trigger:TextChangedTrigger/>
+                    <Trigger:PasswordChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
             </PasswordBox>
-            <WPF:ValidationHelper
-                              Target="{Binding ElementName=passwordBox, Mode=OneWay}">
+            <WPF:ValidationHelper Target="{Binding ElementName=passwordBox, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
                     <Display:TextBlockDisplay/>
                 </WPF:ValidationHelper.Renderer>
@@ -67,48 +65,87 @@
                     <ValidateRules:PasswordRule/>
                 </WPF:ValidationAttachedProperties.Rules>
                 <WPF:ValidationAttachedProperties.Trigger>
-                    <Trigger:TextChangedTrigger/>
+                    <Trigger:PasswordChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
             </PasswordBox>
-            <WPF:ValidationHelper
-                              Target="{Binding ElementName=confirmPasswordBox, Mode=OneWay}">
+            <WPF:ValidationHelper Target="{Binding ElementName=confirmPasswordBox, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
                     <Display:TextBlockDisplay/>
                 </WPF:ValidationHelper.Renderer>
             </WPF:ValidationHelper>
-        
         </StackPanel>
 
         <!-- Date of Birth -->
         <StackPanel Grid.Row="4" Margin="0,0,0,10">
             <TextBlock Text="Ngày sinh:" FontWeight="Bold" Foreground="#555"/>
-            <DatePicker x:Name="dobDatePicker" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff"/>
+            <DatePicker x:Name="dobDatePicker" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
+                <WPF:ValidationAttachedProperties.Rules>
+                    <ValidateRules:DateRule MinDate="01/01/1900" MaxDate="12/31/2023"/>
+                </WPF:ValidationAttachedProperties.Rules>
+                <WPF:ValidationAttachedProperties.Trigger>
+                    <Trigger:DateChangedTrigger/>
+                </WPF:ValidationAttachedProperties.Trigger>
+            </DatePicker>
+            <WPF:ValidationHelper Target="{Binding ElementName=dobDatePicker, Mode=OneWay}">
+                <WPF:ValidationHelper.Renderer>
+                    <Display:BorderDisplay/>
+                </WPF:ValidationHelper.Renderer>
+            </WPF:ValidationHelper>
         </StackPanel>
 
         <!-- Gender -->
         <StackPanel Grid.Row="5" Margin="0,0,0,10">
             <TextBlock Text="Giới tính:" FontWeight="Bold" Foreground="#555"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" x:Name="genderPanel">
                 <RadioButton Content="Nam" GroupName="Gender" Margin="0,0,10,0"/>
                 <RadioButton Content="Nữ" GroupName="Gender"/>
             </StackPanel>
+            <WPF:ValidationHelper Target="{Binding ElementName=genderPanel, Mode=OneWay}">
+                <WPF:ValidationHelper.Renderer>
+                    <Display:TextBlockDisplay/>
+                </WPF:ValidationHelper.Renderer>
+            </WPF:ValidationHelper>
+            <WPF:ValidationAttachedProperties.Rules>
+            </WPF:ValidationAttachedProperties.Rules>
+            <WPF:ValidationAttachedProperties.Trigger>
+                <Trigger:RadioButtonChangedTrigger/>
+            </WPF:ValidationAttachedProperties.Trigger>
         </StackPanel>
+
 
         <!-- Address -->
         <StackPanel Grid.Row="6" Margin="0,0,0,10">
             <TextBlock Text="Thành phố:" FontWeight="Bold" Foreground="#555"/>
             <ComboBox x:Name="addressComboBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
-                <ComboBoxItem Content="TP Hồ Chí Minh"/>
-                <ComboBoxItem Content="Hà Nội"/>
-                <ComboBoxItem Content="Huế"/>
-                <ComboBoxItem Content="Đà Nẵng"/>
+                <WPF:ValidationAttachedProperties.Rules>
+                </WPF:ValidationAttachedProperties.Rules>
+                <WPF:ValidationAttachedProperties.Trigger>
+                    <Trigger:ComboBoxSelectionChangedTrigger/>
+                </WPF:ValidationAttachedProperties.Trigger>
             </ComboBox>
+            <WPF:ValidationHelper Target="{Binding ElementName=addressComboBox, Mode=OneWay}">
+                <WPF:ValidationHelper.Renderer>
+                    <Display:TextBlockDisplay/>
+                </WPF:ValidationHelper.Renderer>
+            </WPF:ValidationHelper>
         </StackPanel>
 
         <!-- Terms and Conditions -->
         <StackPanel Grid.Row="7" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,20">
-            <CheckBox x:Name="termsCheckBox" VerticalAlignment="Center"/>
+            <CheckBox x:Name="termsCheckBox" VerticalAlignment="Center">
+                <WPF:ValidationAttachedProperties.Rules>
+                </WPF:ValidationAttachedProperties.Rules>
+                <WPF:ValidationAttachedProperties.Trigger>
+                    <Trigger:CheckBoxCheckedTrigger/>
+                </WPF:ValidationAttachedProperties.Trigger>
+            </CheckBox>
             <TextBlock Text="Tôi đồng ý với các điều khoản" FontWeight="Bold" Foreground="#555" Margin="5,0,0,0" VerticalAlignment="Center"/>
+
+            <WPF:ValidationHelper Target="{Binding ElementName=termsCheckBox, Mode=OneWay}">
+                <WPF:ValidationHelper.Renderer>
+                    <Display:BorderDisplay/>
+                </WPF:ValidationHelper.Renderer>
+            </WPF:ValidationHelper>
         </StackPanel>
 
         <!-- Submit Button -->

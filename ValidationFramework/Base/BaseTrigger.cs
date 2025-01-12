@@ -23,19 +23,22 @@ namespace ValidationFramework.Base
                 throw new InvalidOperationException("Control is not set.");
             }
 
+            var observer = ValidationAttachedProperties.GetObserver(_control);
+
             if (_control is TextBox textBox)
             {
-                ValidationAttachedProperties.GetObserver(textBox).Validate(textBox.Text);
+                observer.Validate(textBox.Text);
             }
             else if (_control is PasswordBox passwordBox)
             {
-                ValidationAttachedProperties.GetObserver(passwordBox).Validate(passwordBox.Password);
+                observer.Validate(passwordBox.Password);
             }
             else
             {
                 throw new InvalidOperationException("Unsupported control type.");
             }
         }
+
 
         public abstract void Attach();
         public abstract void Detach();
