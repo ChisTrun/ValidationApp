@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using ValidationFramework.Base;
 
 namespace ValidationFramework.Common
 {
     public class ValidateObserver
     {
-        public List<BaseValidateRule> Rules { get; set; } = [];
+        public List<BaseValidateRule> Rules { get; set; } = new List<BaseValidateRule>();
         public BaseValidationResultRenderer? Renderer { get; set; }
 
         public void Validate(string content)
@@ -19,9 +15,8 @@ namespace ValidationFramework.Common
             {
                 summary.AddRange(rule.Validate(content));
             }
-            if (Renderer != null) {
-                Renderer.RenderResult(summary);
-            }
+
+            Renderer?.RenderResult(summary);
         }
     }
 }

@@ -12,17 +12,17 @@ public class TextChangedTrigger : BaseTrigger
 
 	public override void Attach()
 	{
-		if (_textBox != null)
-		{
-			_textBox.TextChanged += OnTextChanged;
-		}
-	}
+        if (_control is TextBox textBox)
+        {
+            textBox.TextChanged += OnTextChanged;
+        }
+    }
 
 	public override void Detach()
 	{
-		if (_textBox != null)
-		{
-			_textBox.TextChanged -= OnTextChanged;
-		}
-	}
+        if (_control is TextBox textBox)
+        {
+            textBox.TextChanged -= OnTextChanged;
+        }
+    }
 }

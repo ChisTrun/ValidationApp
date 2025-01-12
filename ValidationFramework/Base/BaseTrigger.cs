@@ -10,20 +10,35 @@ namespace ValidationFramework.Base
 {
     public abstract class BaseTrigger
     {
-        protected TextBox? _textBox = null;
-        public void SetTextBox(TextBox textBox)
+        protected Control? _control = null;
+        public void SetControl(Control control)
         {
-            _textBox = textBox;
+            _control = control;
         }
 
         protected void TriggerValidate()
         {
-            if (_textBox == null)
+            if (_control == null)
             {
-                throw new InvalidOperationException("TextBox is not set.");
+                throw new InvalidOperationException("Control is not set.");
             }
-            ValidationAttachedProperties.GetObserver(_textBox).Validate(_textBox.Text);
+
+            var observer = ValidationAttachedProperties.GetObserver(_control);
+
+            if (_control is TextBox textBox)
+            {
+                observer.Validate(textBox.Text);
+            }
+            else if (_control is PasswordBox passwordBox)
+            {
+                observer.Validate(passwordBox.Password);
+            }
+            else
+            {
+                throw new InvalidOperationException("Unsupported control type.");
+            }
         }
+
 
         public abstract void Attach();
         public abstract void Detach();
