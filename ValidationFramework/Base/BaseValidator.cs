@@ -18,6 +18,31 @@ namespace ValidationFramework.Base
         {
             _nextValidator = nextValidator;
         }
-        public abstract List<ValidateRecord> Validate(object obj);
+        //public abstract List<ValidateRecord> Validate(object obj);
+        // Template Method
+        public virtual List<ValidateRecord> Validate(object obj)
+        {
+            // Gọi phương thức IsValid để kiểm tra hợp lệ
+            var isValid = IsValid(obj);
+            var validateRecord = new ValidateRecord
+            {
+                IsValid = isValid,
+                Message = isValid ? _validMessage : _errorMessage
+            };
+
+            // Gọi validator tiếp theo nếu có
+            if (_nextValidator != null)
+            {
+                var nextValidateRecords = _nextValidator.Validate(obj);
+                nextValidateRecords.Add(validateRecord);
+                return nextValidateRecords;
+            }
+
+            // Trả về kết quả
+            return new List<ValidateRecord> { validateRecord };
+        }
+
+        // Phương thức trừu tượng để lớp con triển khai logic cụ thể
+        protected abstract bool IsValid(object obj);
     }
 }
