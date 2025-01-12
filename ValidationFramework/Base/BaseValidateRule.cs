@@ -18,7 +18,7 @@ namespace ValidationFramework.Base
 
         protected string _validMessage = null;
 
-        protected string ErrorMessage
+        public string ErrorMessage
         {
             get => _errorMessage;
             set
@@ -28,7 +28,7 @@ namespace ValidationFramework.Base
             }
         }
 
-        protected string ValidMessage
+        public string ValidMessage
         {
             get => _validMessage;
             set

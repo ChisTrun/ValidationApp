@@ -34,7 +34,8 @@ namespace ValidationApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if( addressComboBox.SelectedItem == null)
+
+            if ( addressComboBox.SelectedItem == null)
             {
                 addressComboBox.SelectedIndex = 0;
                 addressComboBox.Text = null;
