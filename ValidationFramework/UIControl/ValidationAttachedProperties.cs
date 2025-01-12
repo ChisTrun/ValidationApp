@@ -22,7 +22,7 @@ public static class ValidationAttachedProperties
 	[Category("Validation")]
 	[Browsable(true)]
 	[DisplayName("Rules")]
-	[AttachedPropertyBrowsableForType(typeof(TextBox))]
+	[AttachedPropertyBrowsableForType(typeof(Control))]
 	public static List<BaseValidateRule> GetRules(DependencyObject element)
 	{
 		return (List<BaseValidateRule>)element.GetValue(RulesProperty);
@@ -62,7 +62,7 @@ public static class ValidationAttachedProperties
     [Category("Validation")]
     [Browsable(true)]
     [DisplayName("Trigger")]
-    [AttachedPropertyBrowsableForType(typeof(TextBox))]
+    [AttachedPropertyBrowsableForType(typeof(Control))]
     public static BaseTrigger GetTrigger(DependencyObject element)
     {
         return (BaseTrigger)element.GetValue(TriggerProperty);
@@ -81,9 +81,21 @@ public static class ValidationAttachedProperties
             existingValue?.Detach();
             if (e.NewValue is BaseTrigger newValue)
             {
-                newValue.SetTextBox(textBox);
+                newValue.SetControl(textBox);
                 newValue.Attach();
             }
+            return;
+        }
+        if (d is PasswordBox passwordBox )
+        {
+            BaseTrigger? existingValue = GetTrigger(passwordBox);
+            existingValue?.Detach();
+            if (e.NewValue is BaseTrigger newValue)
+            {
+                newValue.SetControl(passwordBox);
+                newValue.Attach();
+            }
+            return;
         }
     }
 

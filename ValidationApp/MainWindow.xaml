@@ -62,7 +62,21 @@
         <!-- Confirm Password -->
         <StackPanel Grid.Row="3" Margin="0,0,0,10">
             <TextBlock Text="Xác nhận mật khẩu:" FontWeight="Bold" Foreground="#555"/>
-            <PasswordBox x:Name="confirmPasswordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff"/>
+            <PasswordBox x:Name="confirmPasswordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
+                <WPF:ValidationAttachedProperties.Rules>
+                    <ValidateRules:PasswordRule/>
+                </WPF:ValidationAttachedProperties.Rules>
+                <WPF:ValidationAttachedProperties.Trigger>
+                    <Trigger:TextChangedTrigger/>
+                </WPF:ValidationAttachedProperties.Trigger>
+            </PasswordBox>
+            <WPF:ValidationHelper
+                              Target="{Binding ElementName=confirmPasswordBox, Mode=OneWay}">
+                <WPF:ValidationHelper.Renderer>
+                    <Display:TextBlockDisplay/>
+                </WPF:ValidationHelper.Renderer>
+            </WPF:ValidationHelper>
+        
         </StackPanel>
 
         <!-- Date of Birth -->

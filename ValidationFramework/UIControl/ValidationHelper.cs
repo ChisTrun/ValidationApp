@@ -15,15 +15,15 @@ public class ValidationHelper : ContentControl
 	public static readonly DependencyProperty TargetProperty =
 		DependencyProperty.Register(
 			nameof(Target),
-			typeof(TextBox),
+			typeof(Control),
 			typeof(ValidationHelper),
 			new PropertyMetadata(null, OnTargetChanged));
 
 	[Category("Validation")]
 	[Browsable(true)]
-	public TextBox Target
+	public Control Target
     {
-		get => (TextBox)GetValue(TargetProperty);
+		get => (Control)GetValue(TargetProperty);
 		set => SetValue(TargetProperty, value);
 	}
 
@@ -31,7 +31,7 @@ public class ValidationHelper : ContentControl
 	{
         if (d is ValidationHelper helper && helper.Renderer != null)
 		{
-			if (e.OldValue is TextBox oldControl)
+			if (e.OldValue is Control oldControl)
 			{
 				if (oldControl.GetValue(UIControl.ValidationAttachedProperties.ObserverProperty) is ValidateObserver observer)
 				{
@@ -39,7 +39,7 @@ public class ValidationHelper : ContentControl
 
 				}
 			}
-            if (e.NewValue is TextBox newControl)
+            if (e.NewValue is Control newControl)
             {
                 if (newControl.GetValue(UIControl.ValidationAttachedProperties.ObserverProperty) is ValidateObserver observer)
                 {
