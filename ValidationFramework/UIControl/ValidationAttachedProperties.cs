@@ -9,26 +9,7 @@ namespace ValidationLib.UIControl;
 
 public static class ValidationAttachedProperties
 {
-    /// <summary>
-    /// Rules attached property
-    /// </summary>
-    public static readonly DependencyProperty RulesProperty =
-        DependencyProperty.RegisterAttached(
-            "Rules",
-            typeof(List<BaseValidateRule>),
-            typeof(ValidationAttachedProperties),
-            new PropertyMetadata(new List<BaseValidateRule>()));
-
-    [Category("Validation")]
-    [Browsable(true)]
-    [DisplayName("Rules")]
-    [AttachedPropertyBrowsableForType(typeof(TextBox))]
-    public static List<BaseValidateRule> GetRules(DependencyObject element)
-    {
-        return (List<BaseValidateRule>)element.GetValue(RulesProperty);
-    }
-
-
+  
     /// <summary>
     /// Handler attached property (hidden)
     /// </summary>
@@ -37,15 +18,20 @@ public static class ValidationAttachedProperties
             "Observer",
             typeof(ValidateObserver),
             typeof(ValidationAttachedProperties),
-            new PropertyMetadata(new ValidateObserver()));
+            new PropertyMetadata(null));
 
-    [Browsable(false)]
+    [Category("Validation")]
+    [Browsable(true)]
+    [DisplayName("Observer")]
+    [AttachedPropertyBrowsableForType(typeof(TextBox))]
     public static ValidateObserver GetObserver(DependencyObject element)
     {
-        var handler = (ValidateObserver)element.GetValue(ObserverProperty);
-        var rules = GetRules(element);
-        handler.Rules = rules;
         return (ValidateObserver)element.GetValue(ObserverProperty);
+    }
+
+    public static void SetObserver(DependencyObject element, ValidateObserver value)
+    {
+        element.SetValue(ObserverProperty, value);
     }
 
 

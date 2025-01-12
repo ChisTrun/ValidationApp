@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using ValidationFramework.Base;
 
 namespace ValidationFramework.Common
@@ -6,6 +7,7 @@ namespace ValidationFramework.Common
     public class ValidateObserver
     {
         public List<BaseValidateRule> Rules { get; set; } = new List<BaseValidateRule>();
+
         public BaseValidationResultRenderer? Renderer { get; set; }
 
         public void Validate(string content)
