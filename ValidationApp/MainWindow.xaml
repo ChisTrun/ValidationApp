@@ -80,7 +80,6 @@
             <TextBlock Text="Ngày sinh:" FontWeight="Bold" Foreground="#555"/>
             <DatePicker x:Name="dobDatePicker" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
                 <WPF:ValidationAttachedProperties.Rules>
-                    <ValidateRules:DateRule MinDate="01/01/1900" MaxDate="12/31/2023"/>
                 </WPF:ValidationAttachedProperties.Rules>
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:DateChangedTrigger/>
