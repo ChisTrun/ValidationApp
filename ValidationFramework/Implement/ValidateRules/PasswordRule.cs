@@ -16,7 +16,9 @@ namespace ValidationFramework.Implement.ValidateRules
         {
             var builder = new ValidateBuilder();
 
-            
+            builder.AddRegexValidator(new RegexValidator(pattern: @"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$"));
+
+            builder.AddStringLengthValidator(new StringLengthValidator(minLength: 8, maxLength: 20));
 
             this._validator = builder.Build();
         }

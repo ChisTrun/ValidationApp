@@ -23,7 +23,7 @@ public static class ValidationAttachedProperties
     [Category("Validation")]
     [Browsable(true)]
     [DisplayName("Observer")]
-    [AttachedPropertyBrowsableForType(typeof(TextBox))]
+    [AttachedPropertyBrowsableForType(typeof(Control))]
     public static ValidateObserver GetObserver(DependencyObject element)
     {
         return (ValidateObserver)element.GetValue(ObserverProperty);
@@ -48,7 +48,7 @@ public static class ValidationAttachedProperties
     [Category("Validation")]
     [Browsable(true)]
     [DisplayName("Trigger")]
-    [AttachedPropertyBrowsableForType(typeof(TextBox))]
+    [AttachedPropertyBrowsableForType(typeof(Control))]
     public static BaseTrigger GetTrigger(DependencyObject element)
     {
         return (BaseTrigger)element.GetValue(TriggerProperty);
@@ -68,6 +68,17 @@ public static class ValidationAttachedProperties
             if (e.NewValue is BaseTrigger newValue)
             {
                 newValue.SetControl(textBox);
+                newValue.Attach();
+            }
+        }
+
+        if (d is PasswordBox passwordBox)
+        {
+            BaseTrigger? existingValue = GetTrigger(passwordBox);
+            existingValue?.Detach();
+            if (e.NewValue is BaseTrigger newValue)
+            {
+                newValue.SetControl(passwordBox);
                 newValue.Attach();
             }
         }

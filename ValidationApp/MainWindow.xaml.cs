@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ValidationFramework.Common;
+using ValidationFramework.Implement.ValidateRules;
 
 namespace ValidationApp
 {
@@ -16,14 +18,13 @@ namespace ValidationApp
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
-        }
     }
 }
