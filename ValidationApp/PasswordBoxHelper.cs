@@ -1,44 +1,46 @@
-﻿using System.Windows.Controls;
-using System.Windows;
-namespace ValidationApp { 
+﻿using System.Windows;
+using System.Windows.Controls;
 
-public static class PasswordBoxHelper
+namespace ValidationApp.Helpers
 {
-    public static readonly DependencyProperty BoundPasswordProperty =
-        DependencyProperty.RegisterAttached("BoundPassword", typeof(string), typeof(PasswordBoxHelper),
-        new FrameworkPropertyMetadata(string.Empty, OnBoundPasswordChanged));
-
-    public static string GetBoundPassword(DependencyObject obj)
+    public static class PasswordBoxHelper
     {
-        return (string)obj.GetValue(BoundPasswordProperty);
-    }
+        public static readonly DependencyProperty BoundPasswordProperty =
+            DependencyProperty.RegisterAttached(
+                "BoundPassword",
+                typeof(string),
+                typeof(PasswordBoxHelper),
+                new FrameworkPropertyMetadata(string.Empty, OnBoundPasswordChanged));
 
-    public static void SetBoundPassword(DependencyObject obj, string value)
-    {
-        obj.SetValue(BoundPasswordProperty, value);
-    }
-
-    private static void OnBoundPasswordChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is PasswordBox passwordBox)
+        public static string GetBoundPassword(DependencyObject dp)
         {
-            passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
-
-            if (e.NewValue is string newValue && passwordBox.Password != newValue)
-            {
-                passwordBox.Password = newValue;
-            }
-
-            passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
+            return (string)dp.GetValue(BoundPasswordProperty);
         }
-    }
 
-    private static void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-    {
-        if (sender is PasswordBox passwordBox)
+        public static void SetBoundPassword(DependencyObject dp, string value)
         {
-            SetBoundPassword(passwordBox, passwordBox.Password);
+            dp.SetValue(BoundPasswordProperty, value);
+        }
+
+        private static void OnBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
+        {
+            if (dp is PasswordBox passwordBox)
+            {
+                passwordBox.PasswordChanged -= PasswordBox_PasswordChanged;
+                if (e.NewValue != null)
+                {
+                    passwordBox.Password = e.NewValue.ToString();
+                    passwordBox.PasswordChanged += PasswordBox_PasswordChanged;
+                }
+            }
+        }
+
+        private static void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                SetBoundPassword(passwordBox, passwordBox.Password);
+            }
         }
     }
 }
-    }

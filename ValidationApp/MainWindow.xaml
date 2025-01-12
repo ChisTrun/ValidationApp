@@ -4,8 +4,12 @@
         xmlns:WPF="clr-namespace:ValidationLib.UIControl;assembly=ValidationFramework"
         xmlns:ValidateRules="clr-namespace:ValidationFramework.Implement.ValidateRules;assembly=ValidationFramework" xmlns:Display="clr-namespace:ValidationLib.Display;assembly=ValidationFramework" xmlns:Trigger="clr-namespace:ValidationLib.Trigger;assembly=ValidationFramework"
         xmlns:Common="clr-namespace:ValidationFramework.Common;assembly=ValidationFramework"
-        x:Class="ValidationApp.MainWindow"
-        Title="Đăng ký tài khoản" Height="680" Width="600" Background="#f9f9f9">
+        xmlns:local="clr-namespace:ValidationApp.Helpers"    
+    x:Class="ValidationApp.MainWindow"
+        Title="Đăng ký tài khoản" Height="680" Width="400" Background="#f9f9f9">
+    <Window.Resources>
+        <local:PasswordToBaseValueConverter x:Key="PasswordToBaseValueConverter"/>
+    </Window.Resources>
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -51,6 +55,11 @@
         <StackPanel Grid.Row="2" Margin="0,0,0,10">
             <TextBlock Text="Email2:" FontWeight="Bold" Foreground="#555"/>
             <TextBox x:Name="emailTextBox2" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                    </Style>
+                </TextBox.Style>
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:TextChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
@@ -61,14 +70,14 @@
                         </Common:ValidateObserver.Rules>
 
                         <Common:ValidateObserver.Renderer>
-                            <Display:TextBlockDisplay/>
+                            <Display:BorderDisplay/>
                         </Common:ValidateObserver.Renderer>
                     </Common:ValidateObserver>
                 </WPF:ValidationAttachedProperties.Observer>
             </TextBox>
             <WPF:ValidationHelper Target="{Binding ElementName=emailTextBox2, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
-                    <Display:TextBlockDisplay/>
+                    <Display:BorderDisplay/>
                 </WPF:ValidationHelper.Renderer>
             </WPF:ValidationHelper>
         </StackPanel>
@@ -76,6 +85,8 @@
         <StackPanel Grid.Row="3" Margin="0,0,0,10">
             <TextBlock Text="Mật khẩu:" FontWeight="Bold" Foreground="#555"/>
             <PasswordBox 
+                PasswordChanged="OnConfirmPasswordChanged"
+                local:PasswordBoxHelper.BoundPassword="{Binding Password, Mode=TwoWay}"
                 x:Name="passwordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:PasswordChangedTrigger/>
@@ -101,6 +112,8 @@
         <StackPanel Grid.Row="4" Margin="0,0,0,10">
             <TextBlock Text="Xác nhận mật khẩu:" FontWeight="Bold" Foreground="#555"/>
             <PasswordBox 
+                local:PasswordBoxHelper.BoundPassword="{Binding ConfirmPassword, Mode=TwoWay}"
+                
                 x:Name="confirmPasswordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:PasswordChangedTrigger/>
@@ -108,7 +121,7 @@
                 <WPF:ValidationAttachedProperties.Observer>
                     <Common:ValidateObserver>
                         <Common:ValidateObserver.Rules>
-                            <ValidateRules:ConfirmPasswordRule/>
+                            <ValidateRules:ConfirmPasswordRule BaseValue=""></ValidateRules:ConfirmPasswordRule>
                         </Common:ValidateObserver.Rules>
                         <Common:ValidateObserver.Renderer>
                             <Display:TextBlockDisplay/>
@@ -123,69 +136,25 @@
             </WPF:ValidationHelper>
         </StackPanel>
 
-        <!-- Password --><!--
-        <StackPanel Grid.Row="2" Margin="0,0,0,10">
-            <TextBlock Text="Mật khẩu:" FontWeight="Bold" Foreground="#555"/>
-            <PasswordBox x:Name="passwordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
-                <WPF:ValidationAttachedProperties.Trigger>
-                    <Trigger:PasswordChangedTrigger/>
-                </WPF:ValidationAttachedProperties.Trigger>
-            </PasswordBox>
-            <WPF:ValidationHelper Target="{Binding ElementName=passwordBox, Mode=OneWay}">
-                <WPF:ValidationHelper.Renderer>
-                    <Display:TextBlockDisplay/>
-                </WPF:ValidationHelper.Renderer>
-            </WPF:ValidationHelper>
-        </StackPanel>
-
-        --><!-- Confirm Password --><!--
-        <StackPanel Grid.Row="3" Margin="0,0,0,10">
-            <TextBlock Text="Xác nhận mật khẩu:" FontWeight="Bold" Foreground="#555"/>
-            <PasswordBox x:Name="confirmPasswordBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
-                <WPF:ValidationAttachedProperties.Rules>
-                    <ValidateRules:PasswordRule/>
-                </WPF:ValidationAttachedProperties.Rules>
-                <WPF:ValidationAttachedProperties.Trigger>
-                    <Trigger:PasswordChangedTrigger/>
-                </WPF:ValidationAttachedProperties.Trigger>
-            </PasswordBox>
-            <WPF:ValidationHelper Target="{Binding ElementName=confirmPasswordBox, Mode=OneWay}">
-                <WPF:ValidationHelper.Renderer>
-                    <Display:TextBlockDisplay/>
-                </WPF:ValidationHelper.Renderer>
-            </WPF:ValidationHelper>
-        </StackPanel>
-
-        --><!-- Date of Birth --><!--
-        <StackPanel Grid.Row="4" Margin="0,0,0,10">
+        <!-- Date of Birth -->
+        <StackPanel Grid.Row="6" Margin="0,0,0,10">
             <TextBlock Text="Ngày sinh:" FontWeight="Bold" Foreground="#555"/>
             <DatePicker x:Name="dobDatePicker" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
-                --><!--<WPF:ValidationAttachedProperties.Rules>
-                </WPF:ValidationAttachedProperties.Rules>--><!--
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:DateChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
+                <WPF:ValidationAttachedProperties.Observer>
+                    <Common:ValidateObserver>
+                        <Common:ValidateObserver.Rules>
+                            <ValidateRules:DateRule MaxDate="2025-12-31" MinDate="2023-01-01"/>
+                        </Common:ValidateObserver.Rules>
+                        <Common:ValidateObserver.Renderer>
+                            <Display:TextBlockDisplay/>
+                        </Common:ValidateObserver.Renderer>
+                    </Common:ValidateObserver>
+                </WPF:ValidationAttachedProperties.Observer>
             </DatePicker>
             <WPF:ValidationHelper Target="{Binding ElementName=dobDatePicker, Mode=OneWay}">
-                <WPF:ValidationHelper.Renderer>
-                    <Display:BorderDisplay/>
-                </WPF:ValidationHelper.Renderer>
-            </WPF:ValidationHelper>
-        </StackPanel>
-
-        --><!-- Gender --><!--
-        <StackPanel Grid.Row="5" Margin="0,0,0,10">
-            --><!--<WPF:ValidationAttachedProperties.Rules>
-            </WPF:ValidationAttachedProperties.Rules>--><!--
-            <WPF:ValidationAttachedProperties.Trigger>
-                <Trigger:RadioButtonChangedTrigger/>
-            </WPF:ValidationAttachedProperties.Trigger>
-            <TextBlock Text="Giới tính:" FontWeight="Bold" Foreground="#555"/>
-            <StackPanel Orientation="Horizontal" Margin="0,5,0,0" x:Name="genderPanel">
-                <RadioButton Content="Nam" GroupName="Gender" Margin="0,0,10,0"/>
-                <RadioButton Content="Nữ" GroupName="Gender"/>
-            </StackPanel>
-            <WPF:ValidationHelper Target="{Binding ElementName=genderPanel, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
                     <Display:TextBlockDisplay/>
                 </WPF:ValidationHelper.Renderer>
@@ -193,15 +162,27 @@
         </StackPanel>
 
 
-        --><!-- Address --><!--
-        <StackPanel Grid.Row="6" Margin="0,0,0,10">
+        <StackPanel Grid.Row="7" Margin="0,0,0,10">
             <TextBlock Text="Thành phố:" FontWeight="Bold" Foreground="#555"/>
             <ComboBox x:Name="addressComboBox" Width="300" Padding="5" BorderBrush="#ccc" BorderThickness="1" Background="#fff">
-                --><!--<WPF:ValidationAttachedProperties.Rules>
-                </WPF:ValidationAttachedProperties.Rules>--><!--
+                <ComboBoxItem Content="Hà Nội"/>
+                <ComboBoxItem Content="Hồ Chí Minh"/>
+                <ComboBoxItem Content="Đà Nẵng"/>
+                <ComboBoxItem Content="Hải Phòng"/>
+                <ComboBoxItem Content="Cần Thơ"/>
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:ComboBoxSelectionChangedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
+                <WPF:ValidationAttachedProperties.Observer>
+                    <Common:ValidateObserver>
+                        <Common:ValidateObserver.Rules>
+                            <ValidateRules:RequireFieldRule/>
+                        </Common:ValidateObserver.Rules>
+                        <Common:ValidateObserver.Renderer>
+                            <Display:TextBlockDisplay/>
+                        </Common:ValidateObserver.Renderer>
+                    </Common:ValidateObserver>
+                </WPF:ValidationAttachedProperties.Observer>
             </ComboBox>
             <WPF:ValidationHelper Target="{Binding ElementName=addressComboBox, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
@@ -210,25 +191,33 @@
             </WPF:ValidationHelper>
         </StackPanel>
 
-        --><!-- Terms and Conditions --><!--
-        <StackPanel Grid.Row="7" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,20">
+        <!-- Terms and Conditions -->
+        <StackPanel Grid.Row="8" Orientation="Horizontal" VerticalAlignment="Top" Margin="0,0,0,20">
             <CheckBox x:Name="termsCheckBox" VerticalAlignment="Center">
-                --><!--<WPF:ValidationAttachedProperties.Rules>
-                </WPF:ValidationAttachedProperties.Rules>--><!--
                 <WPF:ValidationAttachedProperties.Trigger>
                     <Trigger:CheckBoxCheckedTrigger/>
                 </WPF:ValidationAttachedProperties.Trigger>
+                <WPF:ValidationAttachedProperties.Observer>
+                    <Common:ValidateObserver>
+                        <Common:ValidateObserver.Rules>
+                            <ValidateRules:RequireFieldRule/>
+                        </Common:ValidateObserver.Rules>
+                        <Common:ValidateObserver.Renderer>
+                            <Display:ColorDisplay/>
+                        </Common:ValidateObserver.Renderer>
+                    </Common:ValidateObserver>
+                </WPF:ValidationAttachedProperties.Observer>
             </CheckBox>
             <TextBlock Text="Tôi đồng ý với các điều khoản" FontWeight="Bold" Foreground="#555" Margin="5,0,0,0" VerticalAlignment="Center"/>
 
             <WPF:ValidationHelper Target="{Binding ElementName=termsCheckBox, Mode=OneWay}">
                 <WPF:ValidationHelper.Renderer>
-                    <Display:BorderDisplay/>
+                    <Display:ColorDisplay/>
                 </WPF:ValidationHelper.Renderer>
             </WPF:ValidationHelper>
-        </StackPanel>-->
+        </StackPanel>
 
         <!-- Submit Button -->
-        <Button Grid.Row="8" Content="Đăng ký" Width="300" Height="40" Background="#4CAF50" Foreground="#fff" FontWeight="Bold" BorderBrush="#4CAF50" BorderThickness="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0"/>
+        <Button Grid.Row="8" Content="Đăng ký" Width="300" Height="40" Background="#4CAF50" Foreground="#fff" FontWeight="Bold" BorderBrush="#4CAF50" BorderThickness="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,20,0,0" Click="Button_Click"/>
     </Grid>
 </Window>

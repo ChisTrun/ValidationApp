@@ -10,7 +10,7 @@ namespace ValidationFramework.Common
 
         public BaseValidationResultRenderer? Renderer { get; set; }
 
-        public void Validate(string content)
+        public void Validate(object content)
         {
             List<ValidateRecord> summary = new List<ValidateRecord>();
             foreach (var rule in Rules)

@@ -10,42 +10,6 @@ namespace ValidationFramework.Common
 
         public ValidateBuilder() { }
 
-        public void AddRegexValidator(RegexValidator validator)
-        {
-            if (_validator == null)
-            {
-                _validator = validator;
-            }
-            else
-            {
-                _validator.SetNextValidator(validator);
-            }
-        }
-
-        public void AddStringLengthValidator(StringLengthValidator validator)
-        {
-            if (_validator == null)
-            {
-                _validator = validator;
-            }
-            else
-            {
-                _validator.SetNextValidator(validator);
-            }
-        }
-
-        public void AddDateRangedValidator(DateRangedValidator validator)
-        {
-            if (_validator == null)
-            {
-                _validator = validator;
-            }
-            else
-            {
-                _validator.SetNextValidator(validator);
-            }
-        }   
-
         public void AddBaseValidator(BaseValidator validator)
         {
             if (_validator == null)

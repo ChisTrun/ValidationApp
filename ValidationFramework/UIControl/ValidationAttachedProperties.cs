@@ -82,6 +82,39 @@ public static class ValidationAttachedProperties
                 newValue.Attach();
             }
         }
+
+        if (d is DatePicker datePicker)
+        {
+            BaseTrigger? existingValue = GetTrigger(datePicker);
+            existingValue?.Detach();
+            if (e.NewValue is BaseTrigger newValue)
+            {
+                newValue.SetControl(datePicker);
+                newValue.Attach();
+            }
+        }
+
+        if (d is ComboBox comboBox)
+        {
+            BaseTrigger? existingValue = GetTrigger(comboBox);
+            existingValue?.Detach();
+            if (e.NewValue is BaseTrigger newValue)
+            {
+                newValue.SetControl(comboBox);
+                newValue.Attach();
+            }
+        }
+
+        if (d is CheckBox checkBox)
+        {
+            BaseTrigger? existingValue = GetTrigger(checkBox);
+            existingValue?.Detach();
+            if (e.NewValue is BaseTrigger newValue)
+            {
+                newValue.SetControl(checkBox);
+                newValue.Attach();
+            }
+        }
     }
 
 }

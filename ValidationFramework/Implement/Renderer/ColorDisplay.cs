@@ -6,7 +6,7 @@ using ValidationFramework.Common;
 
 namespace ValidationLib.Display;
 
-public class BorderDisplay : BaseValidationResultRenderer
+public class ColorDisplay : BaseValidationResultRenderer
 {
     public override void RenderResult(List<ValidateRecord> summary)
     {
@@ -29,15 +29,11 @@ public class BorderDisplay : BaseValidationResultRenderer
             }
             if (isValid)
             {
-                control.BorderBrush = Brushes.Green;
-                control.BorderThickness = new System.Windows.Thickness(3);
-                control.ToolTip = message;
+                control.Background = Brushes.Green;
             }
             else
             {
-                control.BorderBrush = Brushes.Red;
-                control.BorderThickness = new System.Windows.Thickness(3);
-                control.ToolTip = message;
+                control.Background = Brushes.Red;
             }
         }
     }

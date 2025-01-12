@@ -10,33 +10,46 @@ namespace ValidationFramework.Implement.CoreValidator
         private readonly DateTime _minDate;
         private readonly DateTime _maxDate;
 
-        public DateRangedValidator(DateTime minDate, DateTime maxDate, string errorMessage = "Date is out of valid range")
+        public DateRangedValidator(DateTime minDate, DateTime maxDate, string errorMessage = "Date is out of valid range", string validMessage = "Date is valid")
         {
             _minDate = minDate;
             _maxDate = maxDate;
             _errorMessage = errorMessage;
+            _validMessage = validMessage;
         }
 
         public override List<ValidateRecord> Validate(object obj)
         {
             var validateRecord = new ValidateRecord();
-            if (obj is DateTime date)
+            if (obj is string dateString)
             {
-                if (date < _minDate || date > _maxDate)
+                // Thử chuyển đổi chuỗi sang kiểu DateTime
+                if (DateTime.TryParse(dateString, out DateTime date))
                 {
-                    validateRecord.IsValid = false;
-                    validateRecord.Message = $"Date must be between {_minDate.ToShortDateString()} and {_maxDate.ToShortDateString()}.";
+                    // Kiểm tra xem ngày có nằm trong khoảng hợp lệ hay không
+                    if (date < _minDate || date > _maxDate)
+                    {
+                        validateRecord.IsValid = false;
+                        validateRecord.Message = _errorMessage;
+                    }
+                    else
+                    {
+                        validateRecord.IsValid = true;
+                        validateRecord.Message = _validMessage;
+                    }
                 }
                 else
                 {
-                    validateRecord.IsValid = true;
-                    validateRecord.Message = "Date is valid.";
+                    // Nếu chuyển đổi không thành công
+                    validateRecord.IsValid = false;
+                    validateRecord.Message = "Invalid date format.";
                 }
             }
             else
             {
+                // Nếu obj không phải là chuỗi
                 validateRecord.IsValid = false;
-                validateRecord.Message = _errorMessage;
+                validateRecord.Message = "Input is not a valid string.";
             }
 
             if (_nextValidator != null)
